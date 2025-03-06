@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "bigonesystems.django",
+    "ritwickdey.liveserver",
+    "kolo.kolo",
+    "tintoy.msbuild-project-tools",
+    "adrianwilczynski.asp-net-core-switcher",
+    "akamud.vscode-javascript-snippet-pack"
+  ]
+}
