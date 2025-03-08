@@ -7,6 +7,40 @@ def get_started(request):
 
 def home(request):
     return render(request, 'Portal/home.html')
+
+def services(request):
+    return render(request, 'Portal/services.html')
+
+def contactus(request):
+    return render(request, 'Portal/contactus.html')
+
+def join_wait_list(request):
+    return render(request, 'Portal/join_wait_list.html')
+
+def check_username(request):
+    # Logic to check if the username exists
+    return render(request, 'Portal/check_username.html')
+
+def check_email(request):
+    # Logic to check if the email exists
+    return render(request, 'Portal/check_email.html')
+
+def auth_callback_token(request, token):
+    # Logic to handle the authentication callback with the token
+    return render(request, 'Portal/auth_callback_token.html')
+
+def login_user(request):
+    # Logic for user login
+    return render(request, 'Portal/login.html')
+
+def logout_user(request):
+    # Logic for user logout
+    return render(request, 'Portal/logout.html')
+
+def open_close_project(request):
+    # Logic for opening or closing a project
+    return render(request, 'Portal/open_close_project.html')
+
 from django.contrib.auth.models import User
 from django.contrib import messages
 

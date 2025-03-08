@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Description</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="text/javascript">
+      function countdown(deadline) {
+        const countDownDate = new Date(deadline).getTime();
+        const x = setInterval(function () {
+          const now = new Date().getTime();
+          const distance = countDownDate - now;
+          if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("deadTime").innerHTML = "Time Up!";
+          }
+        }, 1000);
+      }
+    </script>
+  </head>
+  <body onload="countdown('2025-12-31T23:59:59')">
+    <header>
+      <h1>Project Title</h1>
+    </header>
+    <div class="innDesc" style="padding: 0px">
+      <p>Description of the project goes here.</p>
+      <p>Posted On: <span class="postedDate">2025-01-01</span></p>
+      <p>
+        Deadline:
+        <span class="dead" style="color: fb7a74"
+          ><span id="deadTime"></span
+        ></span>
+      </p>
+    </div>
+    <footer>
+      <p>&copy; 2025 Project Description</p>
+    </footer>
+  </body>
+</html>
