@@ -1,8 +1,16 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.shortcuts import render
+
+def get_started(request):
+    return render(request, 'Portal/get_started.html')
+
+def home(request):
+    return render(request, 'Portal/home.html')
 from django.contrib.auth.models import User
 from django.contrib import messages
 
-def signup(request):
+def signup(request):  
     if request.method == 'POST':
         username = request.POST['username']
         password1 = request.POST['passwd1']
