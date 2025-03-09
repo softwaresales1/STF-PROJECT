@@ -2,8 +2,9 @@ from django.urls import path
 from . import views
 
 app_name = 'Portal'
+app_name = 'Portal'
+
 urlpatterns = [
-    path('home/', views.home, name='INDEX'),
     path('signup/', views.signup, name='signup'),
     path('get_started/', views.get_started, name='get_started'),
     path('services/', views.services, name='services'),
@@ -14,7 +15,7 @@ urlpatterns = [
     path('auth/callback/<token>', views.auth_callback_token, name='login_iiits'),
     path('login/', views.login_user, name='login'),
     path('logout/', views.logout_user, name='logout'),
-    path('open_close_project/', views.open_close_project,name="open_close_project"),
+    path('open_close_project/', views.open_close_project, name="open_close_project"),
     path('home/', views.home, name='home'),
     path('browse_jobs/', views.browse_jobs, name='browse_jobs'),
     path('jobs_update/', views.jobs_update, name='jobs_update'),
@@ -26,5 +27,5 @@ urlpatterns = [
     path('<int:project_id>/task_edit/<int:task_id>/', views.task_editfunction, name='task_edit'),
     path('profile/<username>/', views.user_profile, name="profile"),
     path('myprojects/', views.myprojects, name="myprojects"),
-    path('applicants/<int:task_id>/', views.applicants,name="applicants")
+    path('applicants/<int:task_id>/', views.applicants, name="applicants")
 ]
