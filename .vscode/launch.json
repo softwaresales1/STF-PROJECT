@@ -2,12 +2,25 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Python Debugger: Current File",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal"
+    },
+    {
       "name": "Python: Django",
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/manage.py",
       "args": ["runserver", "--noreload"],
       "django": true,
+      "justMyCode": true
+    },
+    {
+      "name": "Attach to Django",
+      "type": "debugpy",
+      "request": "attach",
       "justMyCode": true
     }
   ]
