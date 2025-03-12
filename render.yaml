@@ -1,14 +1,32 @@
 services:
   - type: web
-    name: my-django-app
-    runtime: python
-    plan: free
-    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
-    startCommand: "gunicorn my_django_project.wsgi:application"
+    name: mydjaserv
+    runtime: python3.9
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: >-
+      python manage.py migrate &&
+      gunicorn myproject.wsgi:application --timeout 120 --workers 4 --preload
     envVars:
-      - key: DJANGO_SECRET_KEY
-        value: actual_secret_key_here
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+      - key: DEBUG
+        value: "false"
+      - key: SECRET_KEY
+        value: "${SECRET_KEY}"
       - key: DATABASE_URL
+        sync: false
+      - key: ALLOWED_HOSTS
+        value: "${ALLOWED_HOSTS}"
+    healthCheckPath: /
+    autoDeploy: true
+    domains:
+      - mydjango-app.onrender.com
+    env:
+      - key: SECRET_KEY
         fromDatabase:
-          name: my-database
-          property: connectionString
+          name: mysecrets
+          property: SECRET_KEY
+      - key: ALLOWED_HOSTS
+        fromDatabase:
+          name: mysecrets
+          property: ALLOWED_HOSTS
