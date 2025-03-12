@@ -1,7 +1,7 @@
 services:
   - type: web
     name: mydjaserv
-    runtime: python3.9
+    runtime: python
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
     startCommand: >-
       python manage.py migrate &&
@@ -21,12 +21,3 @@ services:
     autoDeploy: true
     domains:
       - mydjango-app.onrender.com
-    env:
-      - key: SECRET_KEY
-        fromDatabase:
-          name: mysecrets
-          property: SECRET_KEY
-      - key: ALLOWED_HOSTS
-        fromDatabase:
-          name: mysecrets
-          property: ALLOWED_HOSTS
