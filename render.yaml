@@ -27,4 +27,4 @@ services:
     healthCheckPath: /
     autoDeploy: true
     domains:
-      - mydjango-app.onrender.com
+      - http://stf-trial.onrender.com/

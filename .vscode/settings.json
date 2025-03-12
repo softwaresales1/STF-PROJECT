@@ -3,6 +3,7 @@
     "Adaptibility",
     "amqp",
     "appdirs",
+    "asgi",
     "asgiref",
     "autofocus",
     "collectstatic",
@@ -29,7 +30,8 @@
     "recieving",
     "signup",
     "stylesheet",
-    "trol"
+    "trol",
+    "venv"
   ],
   "python.testing.unittestArgs": ["-v", "-s", "./Portal", "-p", "*test.py"],
   "python.testing.pytestEnabled": false,
