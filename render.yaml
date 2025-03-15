@@ -23,7 +23,7 @@ services:
       - key: DATABASE_URL
         sync: false
       - key: ALLOWED_HOSTS
-        value: "${ALLOWED_HOSTS}"
+        value: "${Render}"
     healthCheckPath: /
     autoDeploy: true
     domains:
