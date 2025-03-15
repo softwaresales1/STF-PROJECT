@@ -24,6 +24,7 @@
     "mydjaserv",
     "myproject",
     "myprojects",
+    "mysite",
     "navlink",
     "noinput",
     "Omolo",
@@ -34,6 +35,7 @@
     "signup",
     "stylesheet",
     "trol",
+    "uvicorn",
     "venv"
   ],
   "python.testing.unittestArgs": ["-v", "-s", "./Portal", "-p", "*test.py"],
