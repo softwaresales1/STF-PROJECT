@@ -28,7 +28,7 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 DEBUG = env('False')
 
 ALLOWED_HOSTS = [
-    'swiftgen-core.onrender.com',  # Render hostname
+    'stf-trial.onrender.com',  # Render hostname
     '127.0.0.1',  # Localhost
     'swifttalentforge.com',  # Squarespace custom domain
     'www.swifttalentforge.com',  # Custom domain with www
