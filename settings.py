@@ -185,7 +185,7 @@ DEFAULT_FROM_EMAIL = 'Swift Talent Forge <info@swifttalentforge.com>'
 CSRF_TRUSTED_ORIGINS = [
     'https://swifttalentforge.com',
     'https://www.swifttalentforge.com',
-    'https://swiftgen-core.onrender.com'
+    'https://stf-trial.onrender.com'
 ]
 
 SESSION_COOKIE_SECURE = True  # Ensures session cookies are only sent over HTTPS
