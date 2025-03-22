@@ -91,7 +91,7 @@ TEMPLATES = [
 ]
 
 ASGI_APPLICATION = "Work.asgi.application"
-WSGI_APPLICATION = 'Work.wsgi.application'
+WSGI_APPLICATION = 'forge.wsgi.application'
 
 # Parse the DATABASE_URL environment variable
 DATABASE_URL = os.getenv('DATABASE_URL')
