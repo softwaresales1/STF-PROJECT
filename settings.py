@@ -28,12 +28,29 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
 
+# ALLOWED_HOSTS now includes Render hostname, your custom domains, and Render's static outbound IPs
 ALLOWED_HOSTS = [
-    'stf-trial.onrender.com',  # Render hostname
-    '127.0.0.1',  # Localhost
-    'swifttalentforge.com',  # Squarespace custom domain
-    'www.swifttalentforge.com',  # Custom domain with www
+    'stf-trial.onrender.com',      # Render hostname
+    '127.0.0.1',                   # Localhost
+    'swifttalentforge.com',        # Custom domain
+    'www.swifttalentforge.com',    # Custom domain with www
+    '100.20.92.101',               # Render static outbound IP
+    '44.225.181.72',               # Render static outbound IP
+    '44.227.217.144',              # Render static outbound IP
 ]
+
+# Optional: If using django-cors-headers for API requests, enable CORS
+# Uncomment the following lines if needed.
+# INSTALLED_APPS += ['corsheaders']
+# MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
+# CORS_ALLOWED_ORIGINS = [
+#     'https://stf-trial.onrender.com',
+#     'https://swifttalentforge.com',
+#     'https://www.swifttalentforge.com',
+#     'http://100.20.92.101',
+#     'http://44.225.181.72',
+#     'http://44.227.217.144',
+# ]
 
 # Application definition
 INSTALLED_APPS = [
