@@ -1,4 +1,5 @@
-import os
+import os  
+PORT = os.getenv("PORT", "10000")
 from urllib.parse import urlparse
 import environ
 import dj_database_url
