@@ -1,49 +1,43 @@
-import os  
-from urllib.parse import urlparse
+import os
 import environ
 import dj_database_url
+from pathlib import Path
 
-# Set PORT environment variable (default to 10000)
-PORT = os.getenv("PORT", "10000")
-
-# Ensure proper SSL handling when running on Render
-if os.getenv("RENDER"):
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-
-# Initialize environment variables using django-environ
+# Initialize environment variables
 env = environ.Env(
     DEBUG=(bool, False),
     DJANGO_SECRET_KEY=(str, 'fallback-secret-key'),
-    DB_NAME=(str, 'your-db-name'),
-    DB_USER=(str, 'your-db-user'),
-    DB_PASSWORD=(str, 'your-db-password'),
-    DB_HOST=(str, 'localhost'),
-    DB_PORT=(str, '5432'),
+    DATABASE_URL=(str, ''),
     REDIS_URL=(str, 'redis://localhost:6379/0'),
-    EMAIL_HOST_USER=(str, 'your-email@gmail.com'),
-    EMAIL_HOST_PASSWORD=(str, 'your-email-password'),
+    EMAIL_HOST_USER=(str, ''),
+    EMAIL_HOST_PASSWORD=(str, ''),
 )
-environ.Env.read_env()  # Reading .env file for local development
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+environ.Env.read_env()  # Load environment variables from .env file if available
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# Base directory
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Security settings
 SECRET_KEY = env('DJANGO_SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
 
-# ALLOWED_HOSTS now includes Render hostname, your custom domains, and Render's static outbound IPs
 ALLOWED_HOSTS = [
-    'stf-trial.onrender.com',      # Render hostname
-    '127.0.0.1',                   # Localhost
-    'swifttalentforge.com',        # Custom domain
-    'www.swifttalentforge.com',    # Custom domain with www
-    '100.20.92.101',               # Render static outbound IP
-    '44.225.181.72',               # Render static outbound IP
-    '44.227.217.144',              # Render static outbound IP
+    'stf-trial.onrender.com',
+    '127.0.0.1',
+    'swifttalentforge.com',
+    'www.swifttalentforge.com',
+    '100.20.92.101',
+    '44.225.181.72',
+    '44.227.217.144',
 ]
+
+# Port configuration
+PORT = os.getenv("PORT", "10000")
+
+# SSL proxy settings for Render
+if os.getenv("RENDER"):
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # Application definition
 INSTALLED_APPS = [
@@ -59,7 +53,7 @@ INSTALLED_APPS = [
     'channels',
 ]
 
-# Configure Channels to use Redis as the channel layer
+# Channels and Redis configuration
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
@@ -71,7 +65,7 @@ CHANNEL_LAYERS = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Static files handling in production
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -85,7 +79,7 @@ ROOT_URLCONF = 'Work.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'Portal/templates')],
+        'DIRS': [BASE_DIR / 'Portal' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -103,24 +97,18 @@ TEMPLATES = [
 ASGI_APPLICATION = "Work.asgi.application"
 WSGI_APPLICATION = 'Work.wsgi.application'
 
-# Parse the DATABASE_URL environment variable
-DATABASE_URL = os.getenv('DATABASE_URL')
-
-if DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=True)
+# Database configuration
+DATABASE_URL = env('DATABASE_URL')
+DATABASES = {
+    'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=True) if DATABASE_URL else {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('DB_NAME', default=''),
+        'USER': env('DB_USER', default=''),
+        'PASSWORD': env('DB_PASSWORD', default=''),
+        'HOST': env('DB_HOST', default='localhost'),
+        'PORT': env('DB_PORT', default='5432'),
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': env('DB_NAME'),
-            'USER': env('DB_USER'),
-            'PASSWORD': env('DB_PASSWORD'),
-            'HOST': env('DB_HOST'),
-            'PORT': env('DB_PORT'),
-        }
-    }
+}
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -130,30 +118,28 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Localization settings
+# Localization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# Static and media files
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # Directory for static files during development
-]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory for collected static files in production
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Whitenoise storage configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# Default primary key field type
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Logging configuration
+LOG_DIR = BASE_DIR / 'logs'
+LOG_DIR.mkdir(exist_ok=True)  # Ensure log directory exists
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -163,7 +149,7 @@ LOGGING = {
         },
         'file': {
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs/django.log'),
+            'filename': LOG_DIR / 'django.log',
         },
     },
     'root': {
@@ -173,11 +159,9 @@ LOGGING = {
 }
 
 # Authentication backend
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-]
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
-# Email backend configuration
+# Email backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -186,12 +170,12 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = 'Swift Talent Forge <info@swifttalentforge.com>'
 
-# CSRF and Session security
+# CSRF and session security
 CSRF_TRUSTED_ORIGINS = [
     'https://swifttalentforge.com',
     'https://www.swifttalentforge.com',
     'https://stf-trial.onrender.com'
 ]
 
-SESSION_COOKIE_SECURE = True  # Ensures session cookies are only sent over HTTPS
-CSRF_COOKIE_SECURE = True     # Ensures CSRF cookies are only sent over HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
