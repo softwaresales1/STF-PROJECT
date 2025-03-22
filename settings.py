@@ -1,8 +1,14 @@
 import os  
-PORT = os.getenv("PORT", "10000")
 from urllib.parse import urlparse
 import environ
 import dj_database_url
+
+# Set PORT environment variable (default to 10000)
+PORT = os.getenv("PORT", "10000")
+
+# Ensure proper SSL handling when running on Render
+if os.getenv("RENDER"):
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # Initialize environment variables using django-environ
 env = environ.Env(
@@ -38,19 +44,6 @@ ALLOWED_HOSTS = [
     '44.225.181.72',               # Render static outbound IP
     '44.227.217.144',              # Render static outbound IP
 ]
-
-# Optional: If using django-cors-headers for API requests, enable CORS
-# Uncomment the following lines if needed.
-# INSTALLED_APPS += ['corsheaders']
-# MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
-# CORS_ALLOWED_ORIGINS = [
-#     'https://stf-trial.onrender.com',
-#     'https://swifttalentforge.com',
-#     'https://www.swifttalentforge.com',
-#     'http://100.20.92.101',
-#     'http://44.225.181.72',
-#     'http://44.227.217.144',
-# ]
 
 # Application definition
 INSTALLED_APPS = [
