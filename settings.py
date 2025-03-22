@@ -94,28 +94,22 @@ ASGI_APPLICATION = "Work.asgi.application"
 WSGI_APPLICATION = 'Work.wsgi.application'
 
 # Parse the DATABASE_URL environment variable
-DATABASE_URL = os.environ.get('DATABASE_URL')
+DATABASE_URL = os.getenv('DATABASE_URL')
 
 if DATABASE_URL:
-    result = urlparse('postgresql://swiftproject_db_user:5jCqr6TucKgzmIX1ESI9juYtvTHnyInM@dpg-cu2pnapopnds73clvib0-a.oregon-postgres.render.com/swiftproject_db')
     DATABASES = {
-        'default': {
-            'ENGINE': 'postgresql://swiftproject_db_user:5jCqr6TucKgzmIX1ESI9juYtvTHnyInM@dpg-cu2pnapopnds73clvib0-a.oregon-postgres.render.com/swiftproject_db',
-            'NAME': result.path[1:],  # remove leading slash
-            'USER': result.username,
-            'PASSWORD': result.password,
-            'HOST': result.hostname,
-            'PORT': result.port,
-        }
+        'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=True)
     }
 else:
-    # Fallback to using dj_database_url for DATABASE configuration
     DATABASES = {
-        'default': dj_database_url.config(
-            default='postgresql://swiftproject_db_user:5jCqr6TucKgzmIX1ESI9juYtvTHnyInM@dpg-cu2pnapopnds73clvib0-a.oregon-postgres.render.com/swiftproject_db',
-            conn_max_age=600,  # Keep persistent database connections
-            ssl_require=True,  # Ensure SSL connection for security
-        )
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': env('DB_NAME'),
+            'USER': env('DB_USER'),
+            'PASSWORD': env('DB_PASSWORD'),
+            'HOST': env('DB_HOST'),
+            'PORT': env('DB_PORT'),
+        }
     }
 
 # Password validation
