@@ -1,30 +1,45 @@
-# Use an official Python runtime as a parent image
-FROM python:3.11-slim
+# Use a minimal and secure Python runtime as base image
+FROM python:3.11-alpine
 
-# Set the working directory
+# Set environment variables for performance & security
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PORT=10000 \
+    VENV_PATH="/app/venv" \
+    PATH="/app/venv/bin:$PATH"
+
+# Set working directory
 WORKDIR /app
 
-# Install system dependencies (including python3.11-venv)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    python3.11-venv \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+# Install system dependencies and clean up to reduce image size
+RUN apk add --no-cache --update \
+    build-base \
+    libpq \
+    postgresql-dev \
+    && rm -rf /var/cache/apk/*
 
-# Copy the current directory contents into the container
-COPY . /app
+# Copy only dependency files first for Docker caching
+COPY requirements.txt .
 
-# Create a virtual environment and install Python dependencies
-RUN python3.11 -m venv venv && \
-    source venv/bin/activate && \
+# Create virtual environment and install dependencies efficiently
+RUN python3 -m venv $VENV_PATH && \
     pip install --upgrade pip && \
-    pip install -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt
 
-# Expose the default port
-ENV PORT=8000
+# Copy the remaining application files
+COPY . .
+
+# Set proper permissions for the working directory
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup && chown -R appuser:appgroup /app
+
+# Expose port for Render deployment
 EXPOSE $PORT
 
-# Run the application
-CMD ["sh", "-c", "source venv/bin/activate && \
-    python3 manage.py migrate && \
-    python3 manage.py collectstatic --noinput && \
-    gunicorn forge.wsgi:application --bind 0.0.0.0:$PORT --timeout 120 --workers 4 --preload"]
+# Switch to a non-root user for security
+USER appuser
+
+# Start the application
+CMD ["sh", "-c", "
+    python manage.py migrate --noinput && \
+    python manage.py collectstatic --noinput && \
+    gunicorn Work.wsgi:application --bind 0.0.0.0:$PORT --timeout 120 --workers $(nproc) --preload"]
