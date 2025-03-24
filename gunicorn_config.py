@@ -6,8 +6,8 @@ This configuration dynamically adjusts workers, enables threading, and enhances 
 import os
 import multiprocessing
 
-# Bind Gunicorn to the host and port (default: 0.0.0.0:8000)
-bind = os.getenv('GUNICORN_BIND', '0.0.0.0:8000')
+# Bind Gunicorn to the host and port (default: 0.0.0.0:10000)
+bind = os.getenv('GUNICORN_BIND', '0.0.0.0:10000')
 
 # Dynamically calculate the number of workers (2x CPU cores)
 cpu_cores = multiprocessing.cpu_count()
