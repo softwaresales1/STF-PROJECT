@@ -21,8 +21,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'replace-this-in-prod')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-# Allowed Hosts (Update with your Render domain)
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost,your-app.onrender.com').split(',')
+import os
+
+PORT = os.getenv("PORT", "10000")
+
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "swifttalentforge.com",
+    "www.swifttalentforge.com",
+    "stf-trial.onrender.com"
+]
+
+# Ensure Django listens to the correct port
+if os.getenv("RENDER"):
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # Application definitions
 INSTALLED_APPS = [
