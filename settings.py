@@ -102,8 +102,9 @@ WSGI_APPLICATION = 'Work.wsgi.application'
 DATABASE_URL = env('DATABASE_URL')
 
 DATABASES = {
-    'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=True)
-    if DATABASE_URL else {
+    'default': dj_database_url.config(
+        default=DATABASE_URL, conn_max_age=600, ssl_require=True
+    ) if DATABASE_URL else {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': env('DB_NAME', default=''),
         'USER': env('DB_USER', default=''),
@@ -152,7 +153,7 @@ LOGGING = {
         },
         'file': {
             'class': 'logging.FileHandler',
-            'filename': LOG_DIR / 'django.log',
+            'filename': str(LOG_DIR / 'django.log'),
         },
     },
     'root': {
