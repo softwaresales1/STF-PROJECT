@@ -3,9 +3,6 @@ import environ
 import dj_database_url
 from pathlib import Path
 
-# Base directory
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 # Initialize environment variables
 env = environ.Env(
     DEBUG=(bool, False),
@@ -16,7 +13,11 @@ env = environ.Env(
     EMAIL_HOST_PASSWORD=(str, ''),
 )
 
-environ.Env.read_env(BASE_DIR / '.env')  # Load environment variables from .env file
+# Load environment variables from .env file if available
+environ.Env.read_env()
+
+# Base directory
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security settings
 SECRET_KEY = env('DJANGO_SECRET_KEY')
@@ -27,7 +28,6 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'swifttalentforge.com',
     'www.swifttalentforge.com',
-    '*.swifttalentforge.com',  # Allows all subdomains
     '100.20.92.101',
     '44.225.181.72',
     '44.227.217.144',
@@ -100,21 +100,18 @@ WSGI_APPLICATION = 'Work.wsgi.application'
 
 # Database configuration
 DATABASE_URL = env('DATABASE_URL')
-if DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=True)
+
+DATABASES = {
+    'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=True)
+    if DATABASE_URL else {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('DB_NAME', default=''),
+        'USER': env('DB_USER', default=''),
+        'PASSWORD': env('DB_PASSWORD', default=''),
+        'HOST': env('DB_HOST', default='localhost'),
+        'PORT': env('DB_PORT', default='5432'),
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': env('DB_NAME', default=''),
-            'USER': env('DB_USER', default=''),
-            'PASSWORD': env('DB_PASSWORD', default=''),
-            'HOST': env('DB_HOST', default='localhost'),
-            'PORT': env('DB_PORT', default='5432'),
-        }
-    }
+}
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -133,7 +130,7 @@ USE_TZ = True
 
 # Static and media files
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static'] if (BASE_DIR / 'static').exists() else []
+STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Whitenoise storage configuration
@@ -144,7 +141,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # Logging configuration
 LOG_DIR = BASE_DIR / 'logs'
-LOG_DIR.mkdir(parents=True, exist_ok=True)  # Ensure log directory exists
+LOG_DIR.mkdir(exist_ok=True)  # Ensure log directory exists
 
 LOGGING = {
     'version': 1,
@@ -183,9 +180,5 @@ CSRF_TRUSTED_ORIGINS = [
     'https://stf-trial.onrender.com'
 ]
 
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
-
-# Default primary key field type
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
