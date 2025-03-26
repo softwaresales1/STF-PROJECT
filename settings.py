@@ -13,8 +13,7 @@ env = environ.Env(
     EMAIL_HOST_PASSWORD=(str, ''),
 )
 
-# Load environment variables from .env file if available
-environ.Env.read_env()
+environ.Env.read_env()  # Load environment variables from .env file if available
 
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -100,7 +99,6 @@ WSGI_APPLICATION = 'Work.wsgi.application'
 
 # Database configuration
 DATABASE_URL = env('DATABASE_URL')
-
 DATABASES = {
     'default': dj_database_url.config(
         default=DATABASE_URL, conn_max_age=600, ssl_require=True
@@ -126,7 +124,6 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
-USE_L10N = True
 USE_TZ = True
 
 # Static and media files
@@ -153,7 +150,7 @@ LOGGING = {
         },
         'file': {
             'class': 'logging.FileHandler',
-            'filename': str(LOG_DIR / 'django.log'),
+            'filename': LOG_DIR / 'django.log',
         },
     },
     'root': {
