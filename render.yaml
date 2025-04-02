@@ -2,8 +2,19 @@ services:
   - type: web
     name: mydjaserv
     runtime: python
-    buildCommand: "./build.sh && source venv/bin/activate"
-    startCommand: "source venv/bin/activate && python -m gunicorn mysite.asgi:application -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT"
+    buildCommand: |
+      chmod +x build.sh  # Ensure the build script is executable
+      ./build.sh  # Run the build script for setup
+
+    startCommand: |
+      gunicorn Work.asgi:application \
+        -k uvicorn.workers.UvicornWorker \
+        --bind 0.0.0.0:$PORT \
+        --workers $(( 2 * $(nproc) )) \  # Uses 2x CPU cores
+        --threads 2 \  # Helps concurrency without excessive workers
+        --timeout 120 \  # Prevents timeouts during heavy loads
+        --preload  # Reduces memory footprint
+
     envVars:
       - key: PYTHON_VERSION
         value: "3.11.11"
@@ -12,10 +23,38 @@ services:
       - key: SECRET_KEY
         value: "${SECRET_KEY}"
       - key: DATABASE_URL
-        sync: false
+        sync: true
+      - key: DATABASE_CONN_MAX
+        value: "20"
+      - key: DATABASE_CONN_MIN
+        value: "5"
       - key: ALLOWED_HOSTS
-        value: "${ALLOWED_HOSTS}"
-    healthCheckPath: /
+        value: "mydjango-app.onrender.com,swifttalentforge.com,www.swifttalentforge.com,stf-trial.onrender.com"
+      - key: PORT
+        value: "10000"
+      - key: CHANNEL_LAYERS
+        value: "redis://:${REDIS_PASSWORD}@${REDIS_HOST}:${REDIS_PORT}/1"
+      - key: REDIS_TIMEOUT
+        value: "3600"
+      - key: REDIS_POOL_MAX
+        value: "10"
+      - key: DJANGO_WHITENOISE
+        value: "true"
+      - key: STATICFILES_STORAGE
+        value: "whitenoise.storage.CompressedManifestStaticFilesStorage"
+      - key: CSRF_TRUSTED_ORIGINS
+        value: "https://mydjango-app.onrender.com,https://swifttalentforge.com,https://www.swifttalentforge.com,https://stf-trial.onrender.com"
+      - key: DJANGO_SECURE_HSTS_SECONDS
+        value: "31536000"
+      - key: DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS
+        value: "true"
+      - key: DJANGO_SECURE_HSTS_PRELOAD
+        value: "true"
+
+    healthCheckPath: "/health/"
     autoDeploy: true
     domains:
       - mydjango-app.onrender.com
+      - swifttalentforge.com
+      - www.swifttalentforge.com
+      - stf-trial.onrender.com
