@@ -9,7 +9,7 @@ def main():
     DJANGO_ENV = os.getenv("DJANGO_ENV", "production").lower()
     
     # Set settings module based on environment
-    settings_module = f"forge.settings.{DJANGO_ENV}" if DJANGO_ENV in {"development", "staging"} else "forge.settings.production"
+    settings_module = f"settings.{DJANGO_ENV}" if DJANGO_ENV in {"development", "staging"} else "settings.production"
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_module)
 
     # Load environment variables from .env if available
