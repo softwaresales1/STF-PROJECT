@@ -1,2 +1,3 @@
-# Work
-A Freelancing project in python  Django 
+# STF-PROJECT
+
+A Freelancing project in Python Django
