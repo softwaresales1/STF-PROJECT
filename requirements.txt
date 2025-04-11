@@ -1,6 +1,6 @@
 amqp==5.3.1
 appdirs==1.4.4
-asgiref==3.8.1
+asgiref==3.5.2  # Compatible with Django <4.0
 async-timeout==5.0.1
 attrs==24.2.0
 autobahn==24.4.2
@@ -9,7 +9,7 @@ beautifulsoup4==4.12.3
 billiard==4.2.1
 certifi==2024.8.30
 cffi==1.17.1
-channels==4.2.0
+channels==3.0.5  # Updated to a version compatible with Django <4.0
 chardet==5.2.0
 charset-normalizer==3.4.0
 click==8.1.7
@@ -20,7 +20,7 @@ coverage==7.6.7
 cron-descriptor==1.4.5
 cryptography==43.0.3
 cssselect==1.2.0
-daphne==4.1.2
+daphne==3.0.2  # Updated to a version compatible with channels==3.0.5
 defusedxml==0.7.1
 Deprecated==1.2.15
 dj-database-url==2.3.0
