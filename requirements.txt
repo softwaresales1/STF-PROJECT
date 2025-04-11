@@ -84,3 +84,4 @@ yahoo-finance==1.4.0
 zipp==3.21.0
 zope.interface==7.1.1
 psycopg2-binary
+python-decouple
