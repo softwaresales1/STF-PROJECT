@@ -5,6 +5,7 @@
     "kolo.kolo",
     "tintoy.msbuild-project-tools",
     "adrianwilczynski.asp-net-core-switcher",
-    "akamud.vscode-javascript-snippet-pack"
+    "akamud.vscode-javascript-snippet-pack",
+    "firefox-devtools.vscode-firefox-debug"
   ]
 }
