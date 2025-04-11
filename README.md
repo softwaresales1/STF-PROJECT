@@ -55,6 +55,37 @@ Then, open your browser and navigate to `http://127.0.0.1:8000/` to access the a
 
 ## Contributing Guidelines
 
+## Deployment Instructions
+
+To deploy the application, follow these steps:
+
+1. **Build the Docker Image:**
+
+   ```bash
+   docker build -t django-app .
+   ```
+
+2. **Deploy on Render:**
+
+   - Ensure your repository is public or invite Render to your private repository.
+   - Use the provided `render.yaml` for configuration.
+   - Render will automatically build and deploy your application based on the settings in `render.yaml`.
+
+3. **Using package.json:**
+
+   - If you have front-end dependencies, you can manage them using the `package.json` file.
+   - Install dependencies with:
+
+   ```bash
+   npm install
+   ```
+
+   - Start the application with:
+
+   ```bash
+   npm start
+   ```
+
 We welcome contributions! Please follow these steps:
 
 1. Fork the repository.
