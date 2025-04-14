@@ -3,7 +3,7 @@ services:
     name: django-app
     env: python
     buildCommand: ./build.sh # Run the build script for setup
-    startCommand: gunicorn Work.wsgi:application --bind 0.0.0.0:$PORT
+    startCommand: python -m gunicorn Work.wsgi:application --bind 0.0.0.0:$PORT
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: settings.production
