@@ -23,7 +23,7 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = [
-    'stf-trial.onrender.com',
+    'stf-project-0ddq.onrender.com',
     '127.0.0.1',
     'swifttalentforge.com',
     'www.swifttalentforge.com',
@@ -175,7 +175,7 @@ DEFAULT_FROM_EMAIL = 'Swift Talent Forge <info@swifttalentforge.com>'
 CSRF_TRUSTED_ORIGINS = [
     'https://swifttalentforge.com',
     'https://www.swifttalentforge.com',
-    'https://stf-trial.onrender.com'
+    'https://stf-project-0ddq.onrender.com'
 ]
 
 SESSION_COOKIE_SECURE = True

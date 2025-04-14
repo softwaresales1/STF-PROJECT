@@ -8,16 +8,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Basic settings
 DEBUG = False
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='yourdomain.com').split(',')
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='.onrender.com').split(',')
 
 # Database settings
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME', default='STFDB'),
-        'USER': config('DB_USER', default='ADMIN'),
-        'PASSWORD': config('DB_PASSWORD', default='Falcon85h'),
-        'HOST': config('DB_HOST', default='localhost'),
+        'NAME': config('DB_NAME'),
+        'USER': confi R'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
         'PORT': config('DB_PORT', default='5432'),
     }
 }
@@ -38,7 +38,7 @@ SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
-# Whitenoise for static files
+# Middleware for static files
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
