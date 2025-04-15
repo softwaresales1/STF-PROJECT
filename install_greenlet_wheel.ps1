@@ -1,34 +1,24 @@
-# PowerShell script to download and install pre-built greenlet wheel for Windows
+# PowerShell script to install pre-built greenlet wheel to avoid build errors on Windows
 
-$pythonVersion = "cp311"  # Python 3.11
-$arch = "win_amd64"       # 64-bit Windows
-$greenletVersion = "1.1.3"
+# Check if greenlet is already installed
+$greenletInstalled = pip show greenlet -q
+if (-not $greenletInstalled) {
+    Write-Host "Greenlet not found, attempting to install pre-built wheel..."
 
-# Construct wheel filename
-$wheelFile = "greenlet-$greenletVersion-$pythonVersion-$pythonVersion-$arch.whl"
+    # Define URL for pre-built greenlet wheel for Python 3.12 on Windows 64-bit
+    $wheelUrl = "https://github.com/greenlet/greenlet/releases/download/3.1.1/greenlet-3.1.1-cp312-cp312-win_amd64.whl"
 
-# URL to download wheel from Gohlke's unofficial binaries
-$url = "https://download.lfd.uci.edu/pythonlibs/w4tscw6k/$wheelFile"
+    # Download the wheel
+    $wheelFile = "greenlet-3.1.1-cp312-cp312-win_amd64.whl"
+    Invoke-WebRequest -Uri $wheelUrl -OutFile $wheelFile
 
-# Download wheel
-Write-Host "Downloading $wheelFile from $url ..."
-try {
-    Invoke-WebRequest -Uri $url -OutFile $wheelFile -ErrorAction Stop
-} catch {
-    Write-Host "Failed to download $wheelFile from $url"
-    exit 1
+    # Install the wheel
+    pip install $wheelFile
+
+    # Remove the wheel file
+    Remove-Item $wheelFile
+
+    Write-Host "Greenlet installed successfully from pre-built wheel."
+} else {
+    Write-Host "Greenlet is already installed."
 }
-
-# Activate virtual environment
-Write-Host "Activating virtual environment..."
-& .\venv_py311\Scripts\Activate.ps1
-
-# Install wheel
-Write-Host "Installing greenlet wheel..."
-pip install .\$wheelFile
-
-# Cleanup
-Write-Host "Cleaning up..."
-Remove-Item $wheelFile
-
-Write-Host "Greenlet installation completed."
