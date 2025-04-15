@@ -24,12 +24,12 @@ daphne
 defusedxml==0.7.1
 Deprecated==1.2.15
 dj-database-url
-Django
+Django>=3.2
 django-dotenv==1.4.2
 django-widget-tweaks==1.5.0
 fake-useragent==1.5.1
 feedparser==6.0.11
-gevent==22.10.2
+gevent==21.12.0
 gunicorn
 hyperlink==21.0.0
 idna==3.10
