@@ -1,0 +1,43 @@
+Environment Variables for Render Deployment (with exact values from settings.py):
+
+1. DJANGO_SECRET_KEY: The secret key for Django security. Value: 'fallback-secret-key' (replace with your actual secret key)
+2. DEBUG: Enable or disable debug mode. Value: 'False' (should be 'False' in production)
+3. PORT: The port on which the application will run. Value: '10000'
+4. DATABASE_URL: The database connection URL. Example: 'postgres://user:password@host:port/dbname' (set your actual database URL)
+5. REDIS_URL: The Redis server URL for Channels and caching. Default: 'redis://localhost:6379/0'
+6. EMAIL_HOST_USER: Email username for SMTP email sending. Value: '' (set your actual email username)
+7. EMAIL_HOST_PASSWORD: Email password for SMTP email sending. Value: '' (set your actual email password)
+8. USE_CLOUD_STORAGE: Enable cloud storage for static/media files. Not explicitly set in settings.py, default assumed 'False'
+9. AWS_ACCESS_KEY_ID: AWS access key ID for S3 storage. Not set in settings.py, set if using cloud storage
+10. AWS_SECRET_ACCESS_KEY: AWS secret access key for S3 storage. Not set in settings.py, set if using cloud storage
+11. AWS_STORAGE_BUCKET_NAME: AWS S3 bucket name for static/media files. Not set in settings.py, set if using cloud storage
+12. RENDER: Set to any value to indicate running on Render platform. Used for SSL proxy settings.
+
+Additional Notes:
+- SECRET_KEY is set from DJANGO_SECRET_KEY environment variable.
+- DEBUG is hardcoded to False in settings.py for safety.
+- ALLOWED_HOSTS includes Render domain and other domains.
+- SSL proxy header is set if RENDER environment variable is present.
+- Database config uses DATABASE_URL if set, otherwise falls back to individual DB_* variables (DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT) with defaults:
+    - DB_USER: 'ADMIN'
+    - DB_PASSWORD: 'Falcon85h#'
+    - DB_HOST: 'localhost'
+    - DB_PORT: '5432'
+
+Deployment Instructions:
+- In the Render dashboard, go to your service's Environment section.
+- Add the above environment variables with their respective values.
+- Replace placeholder values with your actual secrets and credentials.
+- Keep DJANGO_SECRET_KEY secure and do not expose publicly.
+- Set DEBUG to 'False' in production.
+- Provide correct DATABASE_URL and REDIS_URL for your database and Redis instances.
+- Configure email credentials for sending emails.
+- Set RENDER variable to enable Render-specific settings.
+
+Troubleshooting Tips:
+- Missing or incorrect DATABASE_URL or REDIS_URL can cause connection failures.
+- Ensure email credentials are correct for SMTP email sending.
+- Keep SECRET_KEY secure to avoid security vulnerabilities.
+- Check Render logs for any environment variable related errors during deployment.
+
+This file is generated to assist in setting up the environment variables required for successful deployment on Render.
