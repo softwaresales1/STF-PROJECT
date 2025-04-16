@@ -6,7 +6,7 @@ from pathlib import Path
 # Initialize environment variables
 env = environ.Env(
     DEBUG=(bool, False),
-    DJANGO_SECRET_KEY=(str, 'fallback-secret-key'),
+    DJANGO_SECRET_KEY=(str, 'no+5*)qx*oac$5#&)c%a+idhk9-%$*75m1^_w@%kq@cmn2+v3e'),
     DATABASE_URL=(str, ''),
     REDIS_URL=(str, 'redis://localhost:6379/0'),
     EMAIL_HOST_USER=(str, ''),
@@ -19,7 +19,7 @@ environ.Env.read_env()  # Load environment variables from .env file if available
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security settings
-SECRET_KEY = env('DJANGO_SECRET_KEY')
+SECRET_KEY = 'no+5*)qx*oac$5#&)c%a+idhk9-%$*75m1^_w@%kq@cmn2+v3e'
 DEBUG = False
 
 ALLOWED_HOSTS = [
@@ -27,9 +27,6 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'swifttalentforge.com',
     'www.swifttalentforge.com',
-    '100.20.92.101',
-    '44.225.181.72',
-    '44.227.217.144',
 ]
 
 # Port configuration
@@ -98,17 +95,15 @@ ASGI_APPLICATION = "Work.asgi.application"
 WSGI_APPLICATION = 'Work.wsgi.application'
 
 # Database configuration
-DATABASE_URL = env('DATABASE_URL')
+DATABASE_URL = env('postgres://admin:Falcon85h#@stfdb.onrender.com:5432/STFDB')
 DATABASES = {
-    'default': dj_database_url.config(
-        default=DATABASE_URL, conn_max_age=600, ssl_require=True
-    ) if DATABASE_URL else {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME', default=''),
-        'USER': env('DB_USER', default='ADMIN'),
-        'PASSWORD': env('DB_PASSWORD', default='Falcon85h#'),
-        'HOST': env('DB_HOST', default='localhost'),
-        'PORT': env('DB_PORT', default='5432'),
+        'NAME': 'STFDB',
+        'USER': 'ADMIN',
+        'PASSWORD': 'Falcon85h#',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -180,4 +175,3 @@ CSRF_TRUSTED_ORIGINS = [
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-</create_file>
