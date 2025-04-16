@@ -2,6 +2,7 @@
 
 import os
 from decouple import config
+import dj_database_url
 
 # Define BASE_DIR
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -12,14 +13,11 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='.onrender.com').split(',')
 
 # Database settings
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT', default='5432'),
-    }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True  # Required for Render's PostgreSQL
+    )
 }
 
 # Static files (CSS, JavaScript, Images)
